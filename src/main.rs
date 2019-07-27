@@ -11,42 +11,37 @@ use stm32f4xx_hal::{delay, gpio, stm32, timer};
 
 
 
-#[app(device = stm32f4xx_hal::stm32)]
+#[app(device = stm32f4xx_hal::stm32 )]
 const APP: () = {
     static mut TIMER: stm32f4xx_hal::timer::Timer<stm32::TIM3> = ();
 
 
+
+ 
+
     #[init()]
     fn init() -> init::LateResources {
-        let mut flash = device.FLASH.constrain();
-        let mut rcc = device.RCC.constrain();
-        let mut afio = device.AFIO.constrain(&mut rcc.apb2);
+        let mut flash = device.FLASH;
+        
+        let mut rcc   = device.RCC.constrain();
+       
         let clocks = rcc
             .cfgr
             .use_hse(20.mhz())
             .sysclk(168.mhz())
             .pclk1(42.mhz())
             .pclk2(84.mhz())           
-            .freeze(&mut flash.acr);
-        let mut gpiog = device.GPIOG.split(&mut rcc.apb2);
-        let led13 = gpiog.pg13.into_alternate_push_pull(&mut gpiog.crl);
+            .freeze();
+        let mut gpiog = device.GPIOG.split();
+        let led13 = gpiog.pg13.into_push_pull_output();
+        
+        
 
         
     }
 
 
-
-    #[idle]
-    fn idle() -> ! {
-        static mut X: u32 = 0;
-
-        // Safe access to local `static mut` variable
-        let mut _x: &'static mut u32 = X;
-
-        _x = _x + 1;
-
-        loop {}
-    }
+    
 
 
 

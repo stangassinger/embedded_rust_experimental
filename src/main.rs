@@ -2,7 +2,7 @@
 #![no_std]
 
 #[cfg(not(test))]
-extern crate panic_semihosting;
+
 
 
 use rtfm::app;
@@ -10,14 +10,14 @@ use stm32f4xx_hal::prelude::*;
 use stm32f4xx_hal::{delay, gpio, stm32, timer};
 
 
+extern crate stm32f4;
+extern crate panic_halt;
 
-#[app(device = stm32f4xx_hal::stm32 )]
+#[app(device = stm32f4::stm32f429 )]
 const APP: () = {
     static mut TIMER: stm32f4xx_hal::timer::Timer<stm32::TIM3> = ();
 
 
-
- 
 
     #[init()]
     fn init() -> init::LateResources {
@@ -33,15 +33,11 @@ const APP: () = {
             .pclk2(84.mhz())           
             .freeze();
         let mut gpiog = device.GPIOG.split();
-        let led13 = gpiog.pg13.into_push_pull_output();
-        
-        
+        let led13 = gpiog.pg13.into_push_pull_output();        
 
         
     }
 
-
-    
 
 
 

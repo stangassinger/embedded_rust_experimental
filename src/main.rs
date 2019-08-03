@@ -21,24 +21,46 @@ const APP: () = {
  
 
 
-
-    #[init]
-    fn init(){
-        static mut X: u32 = 0;
-
-        hprintln!("Hello, world!").unwrap();
-        // Safe access to local `static mut` variable
-        let _x: &'static mut u32 = X;
-        
-        
-        
-
-        
+    #[init(spawn = [foo])]
+    fn init() {
+        spawn.foo().unwrap();
     }
+
+    #[task(spawn = [bar, baz])]
+    fn foo() {
+        hprintln!("foo").unwrap();
+
+        // spawns `bar` onto the task scheduler
+        // `foo` and `bar` have the same priority so `bar` will not run until
+        // after `foo` terminates
+        spawn.bar().unwrap();
+
+        // spawns `baz` onto the task scheduler
+        // `baz` has higher priority than `foo` so it immediately preempts `foo`
+        spawn.baz().unwrap();
+    }
+
+    #[task]
+    fn bar() {
+        hprintln!("bar").unwrap();
+
+     
+    }
+
+    #[task(priority = 2)]
+    fn baz() {
+        hprintln!("baz").unwrap();
+    }
+        
+        
+
+        
+    
     
    // Interrupt handlers used to dispatch software tasks
    extern "C" {
        fn EXTI2();
+       fn USART1();
    }   
     
     

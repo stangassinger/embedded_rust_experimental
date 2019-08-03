@@ -11,6 +11,7 @@ stm32f4xx-hal = { version = "0.5", features = ["rt", "stm32f429" ] }
 cortex-m = "0.6"
 cortex-m-rt = { version = "0.6.9", features = ["device"] }
 cortex-m-rtfm = "0.4.3"
+#cortex-m-rtfm = {git = "https://github.com/japaric/cortex-m-rtfm" }
 panic-halt = "0.2.0"
 embedded-hal = "0.2.3"
 stm32f4 = "0.7.1" 

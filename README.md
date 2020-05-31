@@ -1,4 +1,5 @@
-$:   openocd -f openocd.cfg & \n
+$:   openocd -f openocd.cfg & 
+
 $:   cargo run
 
 ### alternativly you can run it with semihosting mode in one line:
